@@ -1,4 +1,4 @@
-
+from fastapi.staticfiles import StaticFiles
 import asyncio
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
@@ -7,10 +7,6 @@ app = FastAPI()
 players = {}
 lock = asyncio.Lock()
 
-
-@app.get("/")
-async def home():
-    return {"status": "Flappy Bird server is running!"}
 
 
 async def send_to_all(message):
@@ -88,3 +84,5 @@ async def multiplayer(websocket: WebSocket):
             "type": "player_left",
             "player": player_id
         })
+
+app.mount("/", StaticFiles(directory="website", html=True), name="website")
